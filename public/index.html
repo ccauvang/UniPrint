@@ -5,37 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>UniPrint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@500;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <header>
-        <h1>UniPrint</h1>
+    <header class="top">
+        <a href="#" class="logo">Uni Print</a>
         <div id="userBox"></div>
+        <button type="button" class="icon-btn" aria-label="Cart">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="9" cy="20" r="1.5" />
+                <circle cx="18" cy="20" r="1.5" />
+                <path d="M1 2h4l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6" />
+            </svg>
+        </button>
+        <button type="button" class="icon-btn" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                stroke-linecap="round" aria-hidden="true">
+                <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+        </button>
     </header>
 
-    <main>
-        <section id="authSection">
-            <div class="two-col">
-                <form id="loginForm">
-                    <h2>Login</h2>
-                    <input name="email" type="email" placeholder="Email" required>
-                    <input name="password" type="password" placeholder="Password" required>
-                    <button type="submit">Login</button>
-                </form>
+    <section class="banner">
+        <h1 class="banner-title">photocopy and printing</h1>
+        <div class="drop-card">
+            <button type="button" id="dropzone" class="dropzone">
+                <span class="drop-text">drop file here or upload it</span>
+                <svg width="78" height="78" viewBox="0 0 78 78" fill="none" stroke="#000" stroke-width="5"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M39 52V16M25 29l14-14 14 14M13 52v13h52V52" />
+                </svg>
+            </button>
+        </div>
+        <input type="file" id="fileInput" accept="application/pdf" hidden>
+        <p id="uploadMsg" class="upload-msg" role="status"></p>
+    </section>
 
-                <form id="registerForm">
-                    <h2>Register</h2>
-                    <input name="fullName" placeholder="Full name" required>
-                    <input name="email" type="email" placeholder="Email" required>
-                    <input name="password" type="password" placeholder="Password (min 6)" required>
-                    <input name="studentOrStaffCode" placeholder="Student / staff code">
-                    <button type="submit">Register</button>
-                </form>
-            </div>
-            <p id="authMsg" class="msg"></p>
-        </section>
-
+    <main class="wrap">
         <section id="adminSection" hidden>
             <form id="productForm">
                 <h2>Add product (staff only)</h2>
@@ -50,10 +60,38 @@
         </section>
 
         <section>
-            <h2>Products</h2>
+            <h2 class="sec-title">souvenir</h2>
+            <a href="#productList" class="view-all">VIEW ALL →</a>
             <div id="productList" class="grid"></div>
         </section>
     </main>
+
+    <footer class="foot">
+        <div class="foot-brand">Uni print</div>
+        <div class="foot-cols">
+            <nav class="foot-col" aria-label="Shop">
+                <h3>SHOP</h3>
+                <a href="#productList">All Souvenir</a>
+                <a href="#">Mug</a>
+                <a href="#">Document</a>
+                <a href="#">Cloths</a>
+            </nav>
+            <nav class="foot-col" aria-label="Info">
+                <h3>INFO</h3>
+                <a href="#">About</a>
+                <a href="#">Size Guide</a>
+                <a href="#">Shipping</a>
+                <a href="#">Return</a>
+            </nav>
+            <nav class="foot-col" aria-label="Follow">
+                <h3>FOLLOW</h3>
+                <a href="#">Instagram</a>
+                <a href="#">Tiktok</a>
+                <a href="#">Facebook</a>
+            </nav>
+        </div>
+        <p class="copy">© 2026 UniPrint.</p>
+    </footer>
 
     <script src="app.js"></script>
 </body>
