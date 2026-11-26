@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const { PDFDocument } = require('pdf-lib');
 const File = require('../models/File');
+const Cart = require('../models/Cart');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
@@ -128,6 +129,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
     } catch {
       return res.status(502).json({ error: 'Storage unreachable' });
     }
+    await Cart.updateMany({ 'items.fileId': doc._id }, { $pull: { items: { fileId: doc._id } } });  
     await doc.deleteOne();
     res.json({ deleted: true });
   } catch (err) {

@@ -30,6 +30,8 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/files', require('./routes/files'));
+app.use('/api/print', require('./routes/print'));
+app.use('/api/cart', require('./routes/cart'));
 
 
 mongoose.connect(process.env.MONGO_URI)
