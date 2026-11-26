@@ -32,16 +32,6 @@ async function api(path, method = 'GET', body) {
     return data;
 }
 
-function saveSession(data) {
-    token = data.token;
-    user = data.user;
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    $('authMsg').textContent = '';
-    say('');
-    render();
-}
-
 function logout() {
     token = null;
     user = null;
@@ -106,11 +96,7 @@ async function loadProducts() {
 }
 
 function render() {
-    const auth = $('authSection');
-    const admin = $('adminSection');
     const box = $('userBox');
-    if (auth) auth.hidden = !!user;
-    if (admin) admin.hidden = !isStaff();
     if (box) {
         box.textContent = '';
         if (user) {
@@ -126,49 +112,6 @@ function render() {
     }
     loadProducts();
 }
-
-$('loginForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const f = e.target.elements;
-    try {
-        saveSession(await api('/auth/login', 'POST', { email: f.email.value, password: f.password.value }));
-        e.target.reset();
-    } catch (err) { $('authMsg').textContent = err.message; }
-});
-
-$('registerForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const f = e.target.elements;
-    try {
-        saveSession(await api('/auth/register', 'POST', {
-            fullName: f.fullName.value,
-            email: f.email.value,
-            password: f.password.value,
-            studentOrStaffCode: f.studentOrStaffCode.value
-        }));
-        e.target.reset();
-    } catch (err) { $('authMsg').textContent = err.message; }
-});
-
-$('productForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const f = e.target.elements;
-    const variants = f.variants.value.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
-        const [sku, size, color, stock] = l.split(',').map(s => s.trim());
-        return { sku, size, color, stockQuantity: Number(stock) || 0 };
-    });
-    try {
-        await api('/products', 'POST', {
-            name: f.name.value,
-            basePrice: Number(f.basePrice.value),
-            isPrintable: f.isPrintable.checked,
-            tags: f.tags.value.split(',').map(s => s.trim()).filter(Boolean),
-            variants
-        });
-        e.target.reset();
-        loadProducts();
-    } catch (err) { alert(err.message); }
-});
 
 function needLogin() {
     if (token) return false;
@@ -217,6 +160,46 @@ drop.addEventListener('drop', (e) => {
     if (e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]);
 });
 
+// 2-level nav - aria-expanded drives the css, hover/click/esc only flip it
+const nav = $('mainNav');
+const menuBtn = $('menuBtn');
+const hoverNav = matchMedia('(min-width: 701px) and (hover: hover)');
+const subBtns = nav.querySelectorAll('.nav-link[aria-expanded]');
+
+const setOpen = (btn, open) => btn.setAttribute('aria-expanded', String(open));
+
+function closeAll() {
+    subBtns.forEach((b) => setOpen(b, false));
+    nav.classList.remove('open');
+    setOpen(menuBtn, false);
+}
+
+subBtns.forEach((btn) => {
+    const item = btn.parentElement;
+    btn.addEventListener('click', (e) => {
+        // mouse click on pc - hover already opened it, toggling would shut it right away
+        if (hoverNav.matches && e.detail > 0) return;
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        subBtns.forEach((b) => setOpen(b, false));
+        setOpen(btn, !open);
+    });
+    item.addEventListener('mouseenter', () => {
+        if (!hoverNav.matches) return;
+        subBtns.forEach((b) => setOpen(b, b === btn));
+    });
+    item.addEventListener('mouseleave', () => {
+        if (hoverNav.matches) setOpen(btn, false);
+    });
+});
+
+menuBtn.addEventListener('click', () => {
+    const open = !nav.classList.contains('open');
+    nav.classList.toggle('open', open);
+    setOpen(menuBtn, open);
+});
+
+nav.addEventListener('click', (e) => { if (e.target.closest('a')) closeAll(); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.top')) closeAll(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+
 render();
-// only the login/register pages have these forms - send user home after success
-if ($('loginForm') || $('registerForm')) location.href = '/';

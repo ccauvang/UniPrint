@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 const { requireAuth, requireRole } = require('../middleware/auth');
 const staffOnly = [requireAuth, requireRole('StoreStaff', 'SuperAdmin')];
 
@@ -8,9 +9,19 @@ const router = express.Router();
 
 const badId = (id) => !mongoose.isValidObjectId(id);
 
+// ref does not check existence, so a typo id would save a product pointing at nothing
+async function categoryError(id) {
+  if (id === undefined || id === null || id === '') return null;
+  if (typeof id !== 'string' || badId(id)) return 'Invalid categoryId';
+  if (!(await Category.exists({ _id: id }))) return 'Category not found';
+  return null;
+}
+
 // CREATE
 router.post('/', staffOnly, async (req, res) => {
   try {
+    const catErr = await categoryError(req.body.categoryId);
+    if (catErr) return res.status(400).json({ error: catErr });
     const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (err) {
@@ -22,6 +33,10 @@ router.post('/', staffOnly, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const filter = {};
+    if (req.query.categoryId) {
+      if (badId(String(req.query.categoryId))) return res.status(400).json({ error: 'Invalid categoryId' });
+      filter.categoryId = req.query.categoryId;
+    }
     if (req.query.isPrintable) filter.isPrintable = req.query.isPrintable === 'true';
     if (req.query.status) filter.status = req.query.status;
     const products = await Product.find(filter).sort({ createdAt: -1 });
@@ -43,6 +58,8 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', staffOnly, async (req, res) => {
   if (badId(req.params.id)) return res.status(400).json({ error: 'Invalid id' });
   try {
+    const catErr = await categoryError(req.body.categoryId);
+    if (catErr) return res.status(400).json({ error: catErr });
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true

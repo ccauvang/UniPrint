@@ -26,6 +26,7 @@ function lanIPs() {
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 app.use('/api/products', require('./routes/products'));
+app.use('/api/categories', require('./routes/categories'));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/files', require('./routes/files'));

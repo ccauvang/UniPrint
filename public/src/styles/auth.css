@@ -1,0 +1,316 @@
+:root {
+    --blue: #003EAA;
+    --blue-light: #1A55C4;
+    --blue-dark: #002D7A;
+    --ink: #000;
+    --ink-soft: rgba(0, 0, 0, .65);
+    --line: rgba(0, 0, 0, .5);
+    --danger: #B42318;
+    --radius: 4px;
+    --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* display:flex on some elements would beat the hidden attribute otherwise */
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--body);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+/* header */
+.top {
+    height: 59px;
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    padding: 0 13px;
+}
+
+.logo {
+    margin-top: 11px;
+    font-family: var(--display);
+    font-size: 40px;
+    line-height: 48px;
+    color: var(--blue);
+}
+
+.top-actions {
+    margin-left: auto;
+    margin-top: 8px;
+    display: flex;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    display: grid;
+    place-items: center;
+}
+
+.icon-btn+.icon-btn {
+    margin-left: -2px;
+}
+
+/* hero */
+.hero {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    padding: 33px 8px 40px 9px;
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* circles need z-index 0 or ::after paints over the card (it comes last in dom order) */
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+}
+
+.hero::before {
+    right: -75px;
+    top: 60px;
+    width: 213px;
+    height: 213px;
+    background: var(--blue-light);
+}
+
+.hero::after {
+    left: -92px;
+    bottom: -130px;
+    width: 331px;
+    height: 331px;
+    background: var(--blue-dark);
+}
+
+.hero>* {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    margin: 0 0 6px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    text-transform: lowercase;
+    color: #fff;
+}
+
+.lead {
+    margin: 0 0 22px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, .85);
+}
+
+/* card */
+.card {
+    width: 100%;
+    max-width: 373px;
+    padding: 24px 20px;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card--wide {
+    max-width: 520px;
+}
+
+.row {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (min-width: 560px) {
+    .row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* fields */
+.label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.label span {
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+/* 16px minimum - iOS zooms the page on focus below that */
+.input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 12px;
+    border: 1.2px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    font: 500 16px var(--body);
+    color: var(--ink);
+}
+
+.input::placeholder {
+    color: rgba(0, 0, 0, .55);
+}
+
+.input:focus {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+    border-color: var(--blue);
+}
+
+.hint {
+    margin: 6px 0 0;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--ink-soft);
+}
+
+/* password show/hide */
+.pw {
+    position: relative;
+}
+
+.pw .input {
+    padding-right: 48px;
+}
+
+.pw-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    background: none;
+    display: grid;
+    place-items: center;
+}
+
+.pw-toggle .slash {
+    display: none;
+}
+
+.pw-toggle[aria-pressed="true"] .slash {
+    display: block;
+}
+
+/* actions */
+.btn {
+    height: 52px;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--blue);
+    font-family: var(--display);
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: lowercase;
+    color: #fff;
+}
+
+.btn:hover {
+    background: var(--blue-dark);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.msg {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1.2px solid var(--danger);
+    border-radius: var(--radius);
+    background: #FEF3F2;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--danger);
+}
+
+.switch {
+    margin: 0;
+    text-align: center;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--ink-soft);
+}
+
+.switch a {
+    font-weight: 700;
+    text-decoration: underline;
+    color: var(--blue);
+}
+
+/* footer */
+.foot {
+    height: 80px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    background: #000;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: rgba(255, 255, 255, .5);
+}

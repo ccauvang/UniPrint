@@ -1,3 +1,15 @@
+:root {
+    --blue: #003EAA;
+    --blue-light: #1A55C4;
+    --blue-dark: #002D7A;
+    --ink: #000;
+    --ink-soft: rgba(0, 0, 0, .65);
+    --line: rgba(0, 0, 0, .12);
+    --header-h: 59px;
+    --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -5,101 +17,60 @@
 [hidden] {
     display: none !important;
 }
-:root {
-    --blue: #003EAA;
-    --blue-light: #1A55C4;
-    --blue-dark: #002D7A;
-    --display: 'Bebas Neue', sans-serif;
+
+/* sticky header would cover anchor targets without this */
+html {
+    scroll-padding-top: var(--header-h);
 }
 
+/* body text was white before - it hid the user name and card names on white */
 body {
-    font-family: 'Inter', system-ui, sans-serif;
     margin: 0;
     background: #f4f6f8;
-    color: #fff;
+    color: var(--ink);
+    font-family: var(--body);
 }
 
-form {
-    background: #fff;
-    padding: 16px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-form h2 {
-    margin: 0 0 4px;
-    font-size: 18px;
-}
-
-input,
-textarea {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font: inherit;
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 button {
-    padding: 8px 14px;
+    padding: 0;
     border: 0;
-    border-radius: 6px;
-    background: var(--blue);
-    color: #fff;
-    cursor: pointer;
+    background: none;
+    color: inherit;
     font: inherit;
+    cursor: pointer;
 }
 
-button.danger {
-    background: #d92d20;
-    margin-top: 8px;
+:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
 }
 
-.two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-
-.badge {
-    display: inline-block;
-    background: #e6f4ea;
-    color: #1a7f37;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 12px;
-    margin: 6px 0;
-}
-
-.variants {
-    font-size: 13px;
-    color: #555;
-    padding-left: 18px;
-    margin: 6px 0 0;
-}
-
-.msg {
-    color: #d92d20;
-    min-height: 20px;
-}
-
+/* header */
 .top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
-    height: 59px;
+    height: var(--header-h);
     padding: 0 13px;
     background: #fff;
 }
 
 .logo {
-    font-family: var(--display);
-    font-size: 40px;
-    line-height: 1;
+    font: 400 40px/1 var(--display);
     color: var(--blue);
-    text-decoration: none;
 }
 
 #userBox {
@@ -118,23 +89,101 @@ button.danger {
 }
 
 #userBox button {
-    padding: 6px 10px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 6px;
+    background: var(--blue);
+    color: #fff;
     font-size: 12px;
 }
 
+#userBox a {
+    color: var(--blue);
+    font-weight: 700;
+}
+
 .icon-btn {
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    background: none;
     display: grid;
     place-items: center;
+    width: 44px;
+    height: 44px;
 }
 
 .icon-btn+.icon-btn {
     margin-left: -2px;
 }
 
+/* nav - mobile first: panel under the header, level 2 opens like an accordion */
+.nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .12);
+}
+
+.nav.open {
+    display: block;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.nav-link:hover {
+    color: var(--blue);
+}
+
+/* chevron only on parents - plain links have no aria-expanded */
+.nav-link[aria-expanded]::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.nav-link[aria-expanded="true"]::after {
+    transform: rotate(-135deg);
+}
+
+.sub {
+    display: none;
+    background: #f4f6f8;
+}
+
+.nav-link[aria-expanded="true"]+.sub {
+    display: block;
+}
+
+.sub a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px 0 32px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sub a:hover {
+    color: var(--blue);
+}
+
+/* banner */
 .banner {
     position: relative;
     overflow: hidden;
@@ -188,10 +237,8 @@ button.danger {
 .dropzone {
     width: 100%;
     min-height: 520px;
-    padding: 0;
-    background: none;
-    color: #000;
-    border: 2px dashed #000;
+    color: var(--ink);
+    border: 2px dashed var(--ink);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -217,6 +264,7 @@ button.danger {
     color: #fff;
 }
 
+/* products */
 .wrap {
     max-width: 1000px;
     margin: 0 auto;
@@ -274,7 +322,7 @@ button.danger {
 .card-cat {
     font-size: 11px;
     font-weight: 700;
-    color: rgba(0, 0, 0, .65);
+    color: var(--ink-soft);
 }
 
 .card-name {
@@ -291,14 +339,10 @@ button.danger {
 
 .was {
     font-size: 11px;
-    color: rgba(0, 0, 0, .65);
+    color: var(--ink-soft);
 }
 
-.card .variants,
-.card button.danger {
-    margin: 0 5px 8px;
-}
-
+/* footer */
 .foot {
     padding: 33px 17px 45px;
     background: #000;
@@ -308,13 +352,13 @@ button.danger {
     line-height: 16px;
 }
 
-.foot a {
-    color: inherit;
-    text-decoration: none;
-}
-
 .foot a:hover {
     color: #fff;
+}
+
+/* blue ring is invisible on black */
+.foot :focus-visible {
+    outline-color: #fff;
 }
 
 .foot-brand {
@@ -349,7 +393,61 @@ button.danger {
     text-align: center;
 }
 
+/* desktop - keep last so it beats the mobile rules above at equal specificity */
 @media (min-width: 701px) {
+    .menu-btn {
+        display: none;
+    }
+
+    #userBox span {
+        max-width: 160px;
+    }
+
+    /* level 1 inline in the header, level 2 drops down under its parent */
+    .nav {
+        display: block;
+        position: static;
+        max-height: none;
+        margin-left: 24px;
+        overflow: visible;
+        background: none;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .nav-list {
+        display: flex;
+    }
+
+    .nav-item {
+        position: relative;
+    }
+
+    .nav-link {
+        width: auto;
+        height: var(--header-h);
+        gap: 8px;
+        padding: 0 14px;
+    }
+
+    .sub {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 200px;
+        border-top: 2px solid var(--blue);
+        background: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, .12);
+    }
+
+    .sub a {
+        padding: 0 16px;
+    }
+
+    .sub a:hover {
+        background: #f4f6f8;
+    }
+
     .grid {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -362,16 +460,4 @@ button.danger {
         grid-template-columns: repeat(3, max-content);
         gap: 64px;
     }
-}
-
-@media (max-width: 700px) {
-    .two-col {
-        grid-template-columns: 1fr;
-    }
-}
-
-#userBox a {
-    color: var(--blue);
-    font-weight: 700;
-    text-decoration: none;
 }
