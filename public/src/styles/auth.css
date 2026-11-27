@@ -314,3 +314,54 @@ button {
     line-height: 16px;
     color: rgba(255, 255, 255, .5);
 }
+
+/* desktop - keep last. card grows a bit and sits in the middle of the blue area */
+@media (min-width: 701px) {
+    .top {
+        padding-inline: max(24px, calc(50% - 560px));
+    }
+
+    /* menu button has no handler on these pages, nothing to open on desktop */
+    .top-actions {
+        display: none;
+    }
+
+    .hero {
+        justify-content: center;
+        padding: 64px 24px 80px;
+    }
+
+    .hero::before {
+        width: 360px;
+        height: 360px;
+        top: 40px;
+        right: -110px;
+    }
+
+    .hero::after {
+        width: 520px;
+        height: 520px;
+        left: -160px;
+        bottom: -240px;
+    }
+
+    .hero h1 {
+        font-size: 56px;
+        line-height: 60px;
+    }
+
+    .lead {
+        margin-bottom: 32px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .card {
+        max-width: 440px;
+        padding: 32px 28px;
+    }
+
+    .card--wide {
+        max-width: 600px;
+    }
+}

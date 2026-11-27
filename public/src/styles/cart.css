@@ -131,3 +131,10 @@
     font-weight: 600;
     color: var(--accent);
 }
+
+@media (min-width: 960px) {
+    .item-thumb {
+        width: 64px;
+        height: 64px;
+    }
+}

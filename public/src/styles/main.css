@@ -10,6 +10,9 @@
     --body: 'Inter', system-ui, sans-serif;
     --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
     --shadow-hover: 0 8px 40px rgba(0, 62, 170, 0.18);
+    --shell: 1120px;
+    /* gutter that lines header, banner and footer up with the product grid edge */
+    --edge: max(13px, calc(50% - var(--shell) / 2 + 10px));
 }
 
 * {
@@ -497,5 +500,102 @@ button {
     .foot-cols {
         grid-template-columns: repeat(3, max-content);
         gap: 64px;
+    }
+
+    .top,
+    .banner,
+    .foot {
+        padding-inline: var(--edge);
+    }
+
+    .wrap {
+        max-width: var(--shell);
+    }
+
+    .banner-title {
+        font-size: 44px;
+        line-height: 1;
+    }
+
+    .banner::before {
+        width: 380px;
+        height: 380px;
+        top: 40px;
+        right: -120px;
+    }
+
+    .banner::after {
+        width: 560px;
+        height: 560px;
+        left: -180px;
+        bottom: -300px;
+    }
+
+    .card-body {
+        gap: 6px;
+        padding: 12px 8px;
+    }
+
+    .card-cat {
+        font-size: 12px;
+    }
+
+    .card-name,
+    .price {
+        font-size: 15px;
+    }
+
+    .was {
+        font-size: 12px;
+    }
+
+    /* brand left, link columns right, copyright under both */
+    .foot {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        column-gap: 64px;
+        align-items: start;
+    }
+
+    .foot-brand {
+        margin-bottom: 0;
+    }
+
+    .foot-cols {
+        grid-column: 2;
+    }
+
+    .copy {
+        grid-column: 1 / -1;
+        margin-top: 48px;
+        padding-top: 32px;
+    }
+}
+
+/* hero turns into title left, upload card right */
+@media (min-width: 1000px) {
+    .banner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+        column-gap: 64px;
+        align-items: center;
+        padding-block: 64px 56px;
+    }
+
+    .banner-title {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        margin: 0;
+        text-align: left;
+        font-size: clamp(64px, 7vw, 96px);
+    }
+
+    .drop-card {
+        grid-column: 2;
+        margin: 0;
+    }
+
+    .upload-msg {
+        grid-column: 2;
     }
 }

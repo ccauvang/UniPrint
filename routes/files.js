@@ -11,6 +11,15 @@ const MAX_SIZE = 25 * 1024 * 1024;
 const MAX_PAGES = 300;
 const STAFF = ['PrintStaff', 'SuperAdmin'];
 
+// multer decodes multipart filenames as latin1 but browsers send utf8 - re-decode or vietnamese names break
+const fixName = (name) => {
+  // chars above 0xff mean it is already decoded right, re-decoding would wreck it
+  if (/[^\u0000-\u00ff]/.test(name)) return name;
+  const fixed = Buffer.from(name, 'latin1').toString('utf8');
+  // invalid utf8 = real latin1 name, keep as is
+  return fixed.includes('\uFFFD') ? name : fixed;
+};
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: MAX_SIZE, files: 1 }
@@ -55,6 +64,7 @@ router.post('/', requireAuth, (req, res, next) => {
   try {
     const f = req.file;
     if (!f) return res.status(400).json({ error: 'No file' });
+    const name = fixName(f.originalname);
     if (f.buffer.subarray(0, 5).toString() !== '%PDF-') {
       return res.status(400).json({ error: 'PDF only' });
     }
@@ -71,7 +81,7 @@ router.post('/', requireAuth, (req, res, next) => {
     }
 
     const form = new FormData();
-    form.append('file', new Blob([f.buffer], { type: 'application/pdf' }), f.originalname);
+    form.append('file', new Blob([f.buffer], { type: 'application/pdf' }), name);
 
     let r;
     try {
@@ -84,7 +94,7 @@ router.post('/', requireAuth, (req, res, next) => {
 
     const doc = await File.create({
       userId: req.user.id,
-      fileName: f.originalname,
+      fileName: name,
       storageId: stored.id,
       fileSize: f.size,
       pageCount
@@ -129,7 +139,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
     } catch {
       return res.status(502).json({ error: 'Storage unreachable' });
     }
-    await Cart.updateMany({ 'items.fileId': doc._id }, { $pull: { items: { fileId: doc._id } } });  
+    await Cart.updateMany({ 'items.fileId': doc._id }, { $pull: { items: { fileId: doc._id } } });
     await doc.deleteOne();
     res.json({ deleted: true });
   } catch (err) {
