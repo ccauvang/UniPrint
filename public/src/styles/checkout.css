@@ -1,0 +1,191 @@
+/* loads after print.css - header, wrap, group, label, msg and total bar come from there */
+
+.choices {
+    display: grid;
+    gap: 8px;
+}
+
+.choice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 8px 16px 8px 12px;
+    border-radius: 5px;
+    background: var(--chip);
+    cursor: pointer;
+}
+
+/* real radio sits on top, invisible - keeps native keyboard + screen reader behaviour */
+.choice input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dot {
+    flex: none;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 0, 0, .36);
+    border-radius: 50%;
+}
+
+.choice input:checked+.dot {
+    border: 3px solid var(--accent);
+}
+
+.choice input:focus-visible+.dot {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+.choice-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.choice-title {
+    display: block;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+.choice-note {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .6);
+}
+
+.choice-price {
+    flex: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+/* 16px minimum - iOS zooms the page on focus below that */
+.input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(217, 217, 217, .36);
+    font: 500 16px var(--body);
+    color: var(--ink);
+}
+
+.input::placeholder {
+    color: rgba(0, 0, 0, .55);
+}
+
+/* voucher */
+.code-row {
+    display: flex;
+    gap: 8px;
+}
+
+.code-row .input {
+    flex: 1;
+    min-width: 0;
+}
+
+.apply {
+    flex: none;
+    min-width: 84px;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 5px;
+    background: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.apply:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.voucher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding-left: 12px;
+    border-radius: 5px;
+    background: rgba(0, 62, 170, .15);
+    color: var(--blue);
+}
+
+.voucher svg {
+    flex: none;
+}
+
+.voucher-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+.voucher-x {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    color: var(--blue);
+}
+
+/* summary */
+.sum {
+    margin: 24px 0 0;
+}
+
+.sum-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 5px;
+}
+
+.sum dt {
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    color: var(--ink-soft);
+}
+
+.sum dd {
+    margin: 0;
+    text-align: right;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    letter-spacing: -.03em;
+}
+
+.sum .disc {
+    color: var(--blue);
+}

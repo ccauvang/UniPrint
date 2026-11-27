@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const Review = require('../models/Review');
 const { requireAuth, requireRole } = require('../middleware/auth');
 const staffOnly = [requireAuth, requireRole('StoreStaff', 'SuperAdmin')];
 
@@ -20,6 +21,9 @@ async function categoryError(id) {
 // CREATE
 router.post('/', staffOnly, async (req, res) => {
   try {
+    // rating fields are owned by the reviews route, staff body must not overwrite them
+    delete req.body.averageRating;
+    delete req.body.reviewCount;
     const catErr = await categoryError(req.body.categoryId);
     if (catErr) return res.status(400).json({ error: catErr });
     const product = await Product.create(req.body);
@@ -58,6 +62,9 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', staffOnly, async (req, res) => {
   if (badId(req.params.id)) return res.status(400).json({ error: 'Invalid id' });
   try {
+    // rating fields are owned by the reviews route, staff body must not overwrite them
+    delete req.body.averageRating;
+    delete req.body.reviewCount;
     const catErr = await categoryError(req.body.categoryId);
     if (catErr) return res.status(400).json({ error: catErr });
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -76,6 +83,7 @@ router.delete('/:id', staffOnly, async (req, res) => {
   if (badId(req.params.id)) return res.status(400).json({ error: 'Invalid id' });
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) return res.status(404).json({ error: 'Not found' });
+  await Review.deleteMany({ productId: product._id });
   res.json({ deleted: true });
 });
 

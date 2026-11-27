@@ -62,6 +62,7 @@ const HEADER = `
             <circle cx="18" cy="20" r="1.5" />
             <path d="M1 2h4l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6" />
         </svg>
+        <span class="badge" id="cartBadge" hidden></span>
     </a>
     <button type="button" class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"
         aria-controls="mainNav">
@@ -160,3 +161,25 @@ menuBtn.addEventListener('click', () => {
 nav.addEventListener('click', (e) => { if (e.target.closest('a')) closeAll(); });
 document.addEventListener('click', (e) => { if (!e.target.closest('.top')) closeAll(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+
+// badge sits in the header cart link - hidden at 0, 99+ so it never outgrows the icon
+function setCartBadge(n) {
+    const b = $('cartBadge');
+    b.textContent = n > 99 ? '99+' : String(n);
+    b.hidden = !n;
+    b.parentElement.setAttribute('aria-label', n ? 'Cart, ' + n + (n === 1 ? ' item' : ' items') : 'Cart');
+}
+
+async function loadCartBadge() {
+    if (!token) { setCartBadge(0); return; }
+    try {
+        setCartBadge((await api('/cart/count')).cartCount || 0);
+    } catch {
+        // badge is a hint only - header must still work when the call fails
+    }
+}
+
+// back button restores the page from cache with an old count
+addEventListener('pageshow', (e) => { if (e.persisted) loadCartBadge(); });
+
+loadCartBadge();

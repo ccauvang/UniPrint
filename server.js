@@ -41,6 +41,9 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/files', require('./routes/files'));
 app.use('/api/print', require('./routes/print'));
 app.use('/api/cart', require('./routes/cart'));
+app.use('/api/coupons/validate', rateLimit({ windowMs: 15 * 60 * 1000, limit: 30 })); // stops code guessing
+app.use('/api/coupons', require('./routes/coupons'));
+app.use('/api', require('./routes/reviews')); // keep last, it mounts at /api
 
 
 mongoose.connect(process.env.MONGO_URI)

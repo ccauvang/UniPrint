@@ -3,6 +3,7 @@ const sel = { size: null, color: null };
 const buy = $('buyBtn');
 let product;
 let busy = false;
+let rating = 0;
 
 const key = (x) => x || null;
 const uniq = (a) => [...new Set(a.filter(Boolean))];
@@ -121,6 +122,8 @@ buy.addEventListener('click', async () => {
             ...(cur ? { variantId: cur._id } : {})
         });
         showMsg('Added to cart.', 'ok');
+        // refetch - same product + variant merges into one line, so +1 locally would be wrong
+        loadCartBadge();
     } catch (e) {
         showMsg(e.message, 'err');
     }
@@ -128,9 +131,9 @@ buy.addEventListener('click', async () => {
     update();
 });
 
-// no review API yet - swap this body for GET /api/products/:id/reviews when it exists
+// approved only - server hides pending reviews
 async function loadReviews() {
-    return [];
+    return api('/products/' + id + '/reviews');
 }
 
 // field names (userName, rating, comment) are guesses - match them to the real review model
@@ -145,6 +148,48 @@ function renderReviews(reviews) {
         ul.appendChild(li);
     }
 }
+
+function showRevMsg(text, kind) {
+    const m = $('revMsg');
+    m.textContent = text;
+    m.className = 'msg ' + (kind || '');
+    m.hidden = !text;
+}
+
+function renderRate() {
+    const row = $('rate');
+    row.textContent = '';
+    for (let n = 1; n <= 5; n++) {
+        const b = el('button', String(n), 'size');
+        b.type = 'button';
+        b.setAttribute('aria-label', n + ' out of 5');
+        b.setAttribute('aria-pressed', String(n === rating));
+        b.onclick = () => { rating = n; renderRate(); };
+        row.appendChild(b);
+    }
+}
+
+$('revForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!token) { location.href = '/login.html'; return; }
+    if (!rating) { showRevMsg('Pick a rating 1-5', 'err'); return; }
+    const btn = $('revBtn');
+    btn.disabled = true;
+    showRevMsg('');
+    const comment = $('revText').value.trim();
+    try {
+        await api('/products/' + id + '/reviews', 'POST', { rating, ...(comment ? { comment } : {}) });
+        // new review is pending - not in the list until staff approve, so no reload
+        showRevMsg('Thanks. Your review shows after staff approve it.', 'ok');
+        $('revText').value = '';
+        rating = 0;
+        renderRate();
+    } catch (err) {
+        // 409 "You already reviewed this product" lands here too
+        showRevMsg(err.message, 'err');
+    }
+    btn.disabled = false;
+});
 
 function fail(text) {
     $('status').textContent = text;
@@ -185,7 +230,9 @@ async function init() {
     update();
 
     $('revSum').textContent = `${Number(product.averageRating || 0).toFixed(1)} / 5 - ${product.reviewCount || 0} reviews`;
-    renderReviews(await loadReviews());
+    renderRate();
+    // reviews failing must not block the page - this runs before $('status') is hidden
+    try { renderReviews(await loadReviews()); } catch { renderReviews([]); }
 
     $('status').hidden = true;
     $('detail').hidden = false;

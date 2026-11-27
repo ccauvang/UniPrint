@@ -63,11 +63,14 @@
             <div class="rev-sum" id="revSum"></div>
             <ul class="rev-list" id="revList"></ul>
             <p class="rev-empty" id="revEmpty">No reviews yet.</p>
-            <div class="rev-form">
+            <form class="rev-form" id="revForm" novalidate>
+                <div class="opt-label" id="lblRate">Your rating</div>
+                <div class="opt-row" id="rate" role="group" aria-labelledby="lblRate"></div>
                 <label class="opt-label" for="revText">Your comment</label>
-                <textarea id="revText" disabled placeholder="Reviews open soon"></textarea>
-                <button type="button" class="buy" disabled>Post review</button>
-            </div>
+                <textarea id="revText" maxlength="1000" placeholder="Share what you think"></textarea>
+                <button type="submit" class="buy" id="revBtn">Post review</button>
+                <p class="msg" id="revMsg" role="status" hidden></p>
+            </form>
         </section>
     </div>
 

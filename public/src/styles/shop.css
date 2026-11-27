@@ -335,6 +335,10 @@
     background: #f4f6f8;
 }
 
+.rev-form .opt-row {
+    margin-bottom: 16px;
+}
+
 .rev-form .buy {
     max-width: 200px;
     margin-top: 0;

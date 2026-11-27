@@ -38,6 +38,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// READ number item already in card
+router.get('/count', async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ userId: req.user.id }, 'items');
+    res.json({ cartCount: cart ? cart.items.length : 0 });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ADD souvenir
 router.post('/items', async (req, res) => {
   try {
