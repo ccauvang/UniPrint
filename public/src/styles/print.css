@@ -1,0 +1,337 @@
+:root {
+    --blue: #003EAA;
+    --blue-dark: #002D7A;
+    --accent: #0B5CFF;
+    --ink: #000;
+    --ink-soft: rgba(0, 0, 0, .6);
+    --chip: rgba(217, 217, 217, .6);
+    --danger: #d93535;
+    --ok: #067647;
+    --total-h: 72px;
+    --body: 'Inter', system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* fixed total bar would cover the last field without this padding */
+body {
+    margin: 0;
+    padding-bottom: calc(var(--total-h) + env(safe-area-inset-bottom, 0px) + 24px);
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--body);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+/* header */
+.top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 59px;
+    padding: 0 16px 0 18px;
+    background: #fff;
+}
+
+.top h1 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+}
+
+.back {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+}
+
+/* content column */
+.wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px 16px 0;
+}
+
+/* file card */
+.file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 62px;
+    padding: 8px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    background: var(--chip);
+}
+
+.file-icon {
+    flex: none;
+    color: var(--accent);
+}
+
+.file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+}
+
+.file-meta {
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 0, 0, .7);
+}
+
+.file-change {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+}
+
+/* option groups */
+.group {
+    margin-top: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.label span {
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+}
+
+.opts {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 10px;
+}
+
+.opt {
+    position: relative;
+    display: block;
+}
+
+/* real radio sits on top, invisible - keeps native keyboard + screen reader behaviour */
+.opt input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.opt span {
+    display: grid;
+    place-items: center;
+    min-height: 44px;
+    border-radius: 5px;
+    background: var(--chip);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+.opt input:checked+span {
+    background: var(--blue);
+    color: #fff;
+}
+
+.opt input:focus-visible+span {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+
+/* copies */
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.copies-label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.step {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 5px;
+    background: var(--chip);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.step:hover {
+    border: 1px solid var(--blue);
+    color: var(--blue);
+}
+
+.step:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.copies {
+    min-width: 40px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* note */
+.note {
+    display: block;
+    width: 100%;
+    min-height: 88px;
+    padding: 12px;
+    border: 0;
+    border-radius: 5px;
+    background: rgba(217, 217, 217, .36);
+    font: 500 16px/20px var(--body);
+    color: var(--ink);
+    resize: vertical;
+}
+
+.note::placeholder {
+    color: rgba(0, 0, 0, .55);
+}
+
+/* message */
+.msg {
+    margin: 20px 0 0;
+    padding: 10px 12px;
+    border: 1.2px solid;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+}
+
+.msg.err {
+    border-color: var(--danger);
+    background: #FEF3F2;
+    color: var(--danger);
+}
+
+.msg.ok {
+    border-color: var(--ok);
+    background: #ECFDF3;
+    color: var(--ok);
+}
+
+/* total bar */
+.total {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    /* figma uses translucent grey, solid version so scrolled fields do not show through */
+    background: #EEF0F1;
+    border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.total-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 480px;
+    min-height: var(--total-h);
+    margin: 0 auto;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+.total-label {
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.total-value {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    letter-spacing: -.03em;
+    color: var(--blue);
+}
+
+.add {
+    min-width: 128px;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 5px;
+    background: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.add:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}

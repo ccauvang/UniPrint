@@ -41,9 +41,9 @@ router.get('/', async (req, res) => {
 // ADD souvenir
 router.post('/items', async (req, res) => {
   try {
-    const { productId, variantId, qty } = req.body || {};
+    const { productId, variantId, quantity } = req.body || {};
     if (badId(productId)) return res.status(400).json({ error: 'Invalid productId' });
-    if (!validQty(qty) || qty > MAX_QTY) return res.status(400).json({ error: `qty must be 1-${MAX_QTY}` });
+    if (!validQty(quantity) || quantity > MAX_QTY) return res.status(400).json({ error: `quantity must be 1-${MAX_QTY}` });
 
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ error: 'Product not found' });
@@ -64,7 +64,7 @@ router.post('/items', async (req, res) => {
       && String(i.variantId || '') === String(variant ? variant._id : ''));
 
     // stock check counts what is already in the cart, not just this request
-    const newQty = (same ? same.quantity : 0) + qty;
+    const newQty = (same ? same.quantity : 0) + quantity;
     if (newQty > MAX_QTY) return res.status(400).json({ error: `Max ${MAX_QTY} per item` });
     if (variant && newQty > variant.stockQuantity) {
       return res.status(409).json({ error: `Only ${variant.stockQuantity} in stock` });
@@ -83,9 +83,9 @@ router.post('/items', async (req, res) => {
         name: product.name,
         sku: variant ? variant.sku : undefined,
         imageUrl: (variant && variant.imageUrl) || product.imageUrls[0],
-        quantity: qty,
+        quantity: quantity,
         unitPrice,
-        totalPrice: unitPrice * qty
+        totalPrice: unitPrice * quantity
       });
     }
     await cart.save();
@@ -129,37 +129,37 @@ router.post('/print-items', async (req, res) => {
   }
 });
 
-// CHANGE qty
+// CHANGE quantity
 router.patch('/items/:id', async (req, res) => {
   try {
     if (badId(req.params.id)) return res.status(400).json({ error: 'Invalid id' });
-    const { qty } = req.body || {};
-    if (!validQty(qty)) return res.status(400).json({ error: 'qty must be a whole number, 1 or more' });
+    const { quantity } = req.body || {};
+    if (!validQty(quantity)) return res.status(400).json({ error: 'quantity must be a whole number, 1 or more' });
 
     const cart = await getCart(req.user.id);
     const item = cart.items.id(req.params.id);
     if (!item) return res.status(404).json({ error: 'Item not found' });
 
     if (item.kind === 'print') {
-      // copies move the price tier, so reprice from stored specs - unitPrice * qty would be wrong
-      const q = quote(await PrintConfig.current(), item.pageCount, { ...item.toObject().specs, copies: qty });
+      // copies move the price tier, so reprice from stored specs - unitPrice * quantity would be wrong
+      const q = quote(await PrintConfig.current(), item.pageCount, { ...item.toObject().specs, copies: quantity });
       if (q.error) return res.status(409).json({ error: q.error + '. Remove item and add it again' });
       item.quantity = q.copies;
       item.unitPrice = q.unitPrice;
       item.totalPrice = q.totalPrice;
     } else {
-      if (qty > MAX_QTY) return res.status(400).json({ error: `qty max ${MAX_QTY}` });
+      if (quantity > MAX_QTY) return res.status(400).json({ error: `quantity max ${MAX_QTY}` });
       const product = await Product.findById(item.productId);
       const variant = product && item.variantId ? product.variants.id(item.variantId) : null;
       if (!product || product.status !== 'Active' || (item.variantId && !variant)) {
         return res.status(409).json({ error: 'Product no longer available' });
       }
-      if (variant && qty > variant.stockQuantity) {
+      if (variant && quantity > variant.stockQuantity) {
         return res.status(409).json({ error: `Only ${variant.stockQuantity} in stock` });
       }
-      item.quantity = qty;
+      item.quantity = quantity;
       item.unitPrice = unitPriceOf(product, variant);
-      item.totalPrice = item.unitPrice * qty;
+      item.totalPrice = item.unitPrice * quantity;
     }
     await cart.save();
     res.json(cart);

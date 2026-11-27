@@ -6,8 +6,17 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+const helmetRule = {
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      "img-src": ["'self'", "data:", ...JSON.parse(process.env.imageURLs)],
+    },
+  }
+}
+
 const app = express();
-app.use(helmet());
+app.use(helmet(helmetRule));
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart - UniPrint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/print.css">
+    <link rel="stylesheet" href="/src/styles/cart.css">
+</head>
+
+<body>
+    <header class="top">
+        <a class="back" href="/" aria-label="Back">
+            <svg width="11" height="18" viewBox="0 0 11 18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 1.5L2 9l7 7.5" />
+            </svg>
+        </a>
+        <h1>Cart</h1>
+        <span class="count" id="count" aria-live="polite"></span>
+    </header>
+
+    <main class="wrap">
+        <p class="msg" id="msg" role="status" hidden></p>
+        <ul class="items" id="items"></ul>
+        <p class="empty-cart" id="empty" hidden>
+            Your cart is empty.
+            <a href="/products.html">Shop souvenirs</a> or <a href="/#print">print a file</a>.
+        </p>
+    </main>
+
+    <footer class="total">
+        <div class="total-in">
+            <div>
+                <div class="total-label">Total</div>
+                <div class="total-value" id="total" aria-live="polite">-</div>
+            </div>
+            <button type="button" class="add" id="checkoutBtn" disabled>Checkout</button>
+        </div>
+    </footer>
+
+    <script src="/src/scripts/cart.js"></script>
+</body>
+
+</html>

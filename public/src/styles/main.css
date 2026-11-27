@@ -8,6 +8,8 @@
     --header-h: 59px;
     --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
     --body: 'Inter', system-ui, sans-serif;
+    --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    --shadow-hover: 0 8px 40px rgba(0, 62, 170, 0.18);
 }
 
 * {
@@ -21,6 +23,7 @@
 /* sticky header would cover anchor targets without this */
 html {
     scroll-padding-top: var(--header-h);
+    scroll-behavior: smooth;
 }
 
 /* body text was white before - it hid the user name and card names on white */
@@ -29,6 +32,7 @@ body {
     background: #f4f6f8;
     color: var(--ink);
     font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -199,18 +203,18 @@ button {
 }
 
 .banner::before {
-    width: 213px;
-    height: 213px;
+    width: 283px;
+    height: 283px;
     top: 60px;
-    right: -75px;
+    right: -95px;
     background: var(--blue-light);
 }
 
 .banner::after {
-    width: 331px;
-    height: 331px;
-    left: -92px;
-    bottom: -64px;
+    width: 433px;
+    height: 433px;
+    left: -100px;
+    bottom: -190px;
     background: var(--blue-dark);
 }
 
@@ -297,19 +301,35 @@ button {
 
 .card {
     display: flex;
+    position: relative;
     flex-direction: column;
     background: #fff;
-    border: 1.2px solid rgba(0, 0, 0, .36);
-    border-radius: 2px;
+    border-radius: 5px;
     overflow: hidden;
+    transition: box-shadow var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
 }
 
 .card-img {
     display: block;
-    width: 100%;
+    position: relative;
     aspect-ratio: 180 / 260;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.card-img img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 2px;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .card-img img {
+    transform: scale(1.05);
 }
 
 .card-body {

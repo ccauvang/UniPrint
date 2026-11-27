@@ -44,19 +44,26 @@ function card(p, i) {
     const c = el('article', undefined, 'card');
 
     if (p.imageUrls && p.imageUrls[0]) {
-        const img = el('img', undefined, 'card-img');
+        const cardImg = el('a', undefined, 'card-img');
+        cardImg.href = '/product.html?id=' + p._id;
+        const img = el('img', undefined);
         img.src = p.imageUrls[0];
         img.alt = p.name;
-        c.appendChild(img);
+        cardImg.appendChild(img);
+        c.appendChild(cardImg);
     } else {
-        const ph = el('div', undefined, 'card-img');
-        ph.style.background = SWATCHES[i % SWATCHES.length];
-        c.appendChild(ph);
+        const placeholder = el('a', undefined, 'card-img');
+        placeholder.href = '/product.html?id=' + p._id;
+        placeholder.style.background = SWATCHES[i % SWATCHES.length];
+        c.appendChild(placeholder);
     }
 
     const body = el('div', undefined, 'card-body');
+    const name = el('a', p.name, 'card-name');
+    name.href = '/product.html?id=' + p._id;
+
     body.appendChild(el('div', (p.tags && p.tags[0]) || 'Souvenir', 'card-cat'));
-    body.appendChild(el('div', p.name, 'card-name'));
+    body.appendChild(name);
     body.appendChild(el('div', money(p.salePrice || p.basePrice), 'price'));
     if (p.salePrice) body.appendChild(el('s', money(p.basePrice), 'was'));
     c.appendChild(body);
@@ -138,7 +145,7 @@ async function uploadFile(file) {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || 'Upload failed');
-        say(`Uploaded: ${data.fileName} (${data.pageCount} pages)`);
+        location.href = 'print.html?file=' + data._id;
     } catch (e) { say(e.message); }
 }
 

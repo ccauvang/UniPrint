@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All souvenir - UniPrint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/shop.css">
+</head>
+
+<body>
+    <section class="page-banner">
+        <h1>all souvenir</h1>
+    </section>
+
+    <main class="sheet">
+        <div class="wrap">
+            <form class="filters" id="filters" role="search">
+                <input id="q" type="search" placeholder="Search souvenir" aria-label="Search souvenir">
+                <select id="cat" aria-label="Category">
+                    <option value="">All categories</option>
+                </select>
+            </form>
+            <div id="productList" class="grid"></div>
+        </div>
+    </main>
+
+    <script src="/src/scripts/common.js"></script>
+    <script src="/src/scripts/products.js"></script>
+</body>
+
+</html>

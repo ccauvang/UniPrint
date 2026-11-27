@@ -13,6 +13,7 @@ const DEFAULTS = {
     { code: 'couche200', label: 'Couche 200gsm', multiplier: 3 }
   ],
   bindings: [
+    { code: 'none', label: 'None', price: 200 },
     { code: 'staple', label: 'Staple', price: 1000 },
     { code: 'spiral', label: 'Spiral', price: 15000 },
     { code: 'hardcover', label: 'Gold-stamped hardcover', price: 80000 },

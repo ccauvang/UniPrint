@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product - UniPrint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/shop.css">
+</head>
+
+<body>
+    <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> / <a href="/products.html">Products</a> / <span id="crumbName">...</span>
+    </nav>
+
+    <div class="sheet">
+        <p class="empty" id="status" role="status">Loading...</p>
+
+        <main class="detail" id="detail" hidden>
+            <div class="gallery">
+                <div class="main-img"><img id="mainImg" alt="" hidden></div>
+                <div class="thumbs" id="thumbs"></div>
+            </div>
+
+            <div class="info">
+                <div class="d-cat" id="dCat"></div>
+                <h1 class="d-name" id="dName"></h1>
+                <div class="d-price"><span id="dPrice"></span><s class="was" id="dWas"></s></div>
+                <p class="d-desc" id="dDesc"></p>
+                <hr>
+
+                <div class="opt-group" id="sizeBox" hidden>
+                    <div class="opt-label">Size</div>
+                    <div class="opt-row" id="sizes"></div>
+                </div>
+
+                <div class="opt-group" id="colorBox" hidden>
+                    <div class="opt-label">Color</div>
+                    <div class="opt-row" id="colors"></div>
+                </div>
+
+                <div class="opt-group" id="printBox" hidden>
+                    <div class="opt-label">Printable</div>
+                    <div class="check" role="img" aria-label="Printable product">
+                        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 7l5 5L16 2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <p class="msg" id="msg" role="status" hidden></p>
+                <button type="button" class="buy" id="buyBtn">Add to cart - Order now</button>
+                <a class="back-link" href="/products.html">Back to products</a>
+            </div>
+        </main>
+
+        <section class="reviews" aria-labelledby="revTitle" id="reviews" hidden>
+            <h2 id="revTitle">Reviews</h2>
+            <div class="rev-sum" id="revSum"></div>
+            <ul class="rev-list" id="revList"></ul>
+            <p class="rev-empty" id="revEmpty">No reviews yet.</p>
+            <div class="rev-form">
+                <label class="opt-label" for="revText">Your comment</label>
+                <textarea id="revText" disabled placeholder="Reviews open soon"></textarea>
+                <button type="button" class="buy" disabled>Post review</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="/src/scripts/common.js"></script>
+    <script src="/src/scripts/product.js"></script>
+</body>
+
+</html>

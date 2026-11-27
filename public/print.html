@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Print options - UniPrint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/print.css">
+</head>
+
+<body>
+    <header class="top">
+        <a class="back" href="/#print" aria-label="Back">
+            <svg width="11" height="18" viewBox="0 0 11 18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 1.5L2 9l7 7.5" />
+            </svg>
+        </a>
+        <h1>Print options</h1>
+    </header>
+
+    <main class="wrap">
+        <section class="file" aria-label="Selected file">
+            <svg class="file-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6M8 13h8M8 17h8" />
+            </svg>
+            <div class="file-info">
+                <div class="file-name" id="fileName">Loading...</div>
+                <div class="file-meta" id="fileMeta"></div>
+            </div>
+            <a class="file-change" href="/#print">Change</a>
+        </section>
+
+        <form id="printForm" novalidate>
+            <div class="group" role="radiogroup" aria-labelledby="lblPaper">
+                <div class="label" id="lblPaper">Paper size</div>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="paperSize" value="A4" checked><span>A4</span></label>
+                    <label class="opt"><input type="radio" name="paperSize" value="A3"><span>A3</span></label>
+                    <label class="opt"><input type="radio" name="paperSize" value="A5"><span>A5</span></label>
+                </div>
+            </div>
+
+            <div class="group" role="radiogroup" aria-labelledby="lblColor">
+                <div class="label" id="lblColor">Color</div>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="colorMode" value="bw" checked><span>B&amp;W</span></label>
+                    <label class="opt"><input type="radio" name="colorMode" value="color"><span>Color</span></label>
+                </div>
+            </div>
+
+            <div class="group" role="radiogroup" aria-labelledby="lblSides">
+                <div class="label" id="lblSides">Sides</div>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="printSide" value="single" checked><span>1 sided</span></label>
+                    <label class="opt"><input type="radio" name="printSide" value="double"><span>2 sided</span></label>
+                </div>
+            </div>
+
+            <div class="group" role="radiogroup" aria-labelledby="lblBinding">
+                <div class="label" id="lblBinding">Binding</div>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="binding" value="none" checked><span>None</span></label>
+                    <label class="opt"><input type="radio" name="binding" value="staple"><span>Staple</span></label>
+                    <label class="opt"><input type="radio" name="binding" value="spiral"><span>Spiral</span></label>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="copies-label" id="lblCopies">Copies</span>
+                <div class="stepper" role="group" aria-labelledby="lblCopies">
+                    <button type="button" class="step" id="minusBtn" aria-label="Fewer copies">-</button>
+                    <output class="copies" id="copies" aria-live="polite">1</output>
+                    <button type="button" class="step plus" id="plusBtn" aria-label="More copies">+</button>
+                </div>
+            </div>
+
+            <div class="group">
+                <label class="label" for="note">Note <span>(optional)</span></label>
+                <textarea class="note" id="note" name="note" maxlength="200"
+                    placeholder="Anything we should know to print"></textarea>
+            </div>
+
+            <p class="msg" id="msg" role="status" hidden></p>
+        </form>
+    </main>
+
+    <footer class="total">
+        <div class="total-in">
+            <div>
+                <div class="total-label">Total</div>
+                <div class="total-value" id="total" aria-live="polite">-</div>
+            </div>
+            <button type="submit" form="printForm" class="add" id="addBtn" disabled>Add to cart</button>
+        </div>
+    </footer>
+
+    <script src="/src/scripts/print.js"></script>
+</body>
+
+</html>
