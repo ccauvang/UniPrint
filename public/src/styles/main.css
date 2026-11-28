@@ -9,7 +9,7 @@
     --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
     --body: 'Inter', system-ui, sans-serif;
     --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-    --shadow-hover: 0 8px 40px rgba(0, 62, 170, 0.18);
+    --shadow-hover: 0 8px 24px rgba(0, 62, 170, 0.18);
     --shell: 1120px;
     /* gutter that lines header, banner and footer up with the product grid edge */
     --edge: max(13px, calc(50% - var(--shell) / 2 + 10px));
@@ -326,12 +326,21 @@ button {
     flex-direction: column;
     background: #fff;
     border-radius: 5px;
-    overflow: hidden;
-    transition: box-shadow var(--transition);
 }
 
-.card:hover {
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
     box-shadow: var(--shadow-hover);
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+}
+
+.card:hover::after {
+    opacity: 1;
 }
 
 .card-img {

@@ -49,6 +49,8 @@ function card(p, i) {
         const img = el('img', undefined);
         img.src = p.imageUrls[0];
         img.alt = p.name;
+        img.loading = 'lazy';
+        img.decoding = 'async';
         cardImg.appendChild(img);
         c.appendChild(cardImg);
     } else {
